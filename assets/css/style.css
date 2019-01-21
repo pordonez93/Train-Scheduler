@@ -1,0 +1,14 @@
+body{
+    background-image: url("../images/background.jpg")
+}
+
+#train-card, .jumbotron.jumbotron-fluid{
+    opacity: .9;
+}
+
+#submit{
+    background-color: darkgray;
+}
+h1{
+    text-align: Center;
+}
