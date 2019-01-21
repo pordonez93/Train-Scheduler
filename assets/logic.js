@@ -17,7 +17,6 @@ var config = {
         var trnDestination= $("#destination-input").val().trim();
         var trnStart = moment($("#start-input").val().trim(), "HH:mm").format("HH:mm");
         var trnFrequency = $("#frequency-input").val().trim();
-
         var newTrain = {
             name: trnName,
             destination: trnDestination,
@@ -38,16 +37,19 @@ database.ref().on("child_added", function(childSnapshot){
     var trnName = childSnapshot.val().name;
     var trnDestination = childSnapshot.val().destination;
     var trnStart = childSnapshot.val().start;
+        trnStart = moment(trnStart, "HH:mm").subtract(1, "years");
     var trnFrequency = childSnapshot.val().frequency;
-    // var nxtArrival=
-    // var minAway=
+    var trnRemainder = moment().diff(moment(trnStart), "minutes") % trnFrequency;
+    var minAway = trnFrequency - trnRemainder;
+    // Calculate the arrival time
+    var nxtArrival = moment().add(minAway, "minutes").format("hh:mm A");
 
     var newRow = $("<tr>").append(
         $("<td>").text(trnName),
         $("<td>").text(trnDestination),
         $("<td>").text(trnFrequency),
-        // $("<td>").text(nxtArrival),
-        // $("<td>").text(minAway),
+        $("<td>").text(nxtArrival),
+        $("<td>").text(minAway),
     );
     $("#train-table > tbody").append(newRow);
 });
